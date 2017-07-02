@@ -15,15 +15,7 @@ object `package` {
   }
 
   implicit class BigIntPimp(x: BigInt) {
-    val width = {
-      @annotation.tailrec
-      def width0(x: BigInt, w: Int): Int = {
-        val div = x / 10
-        if (div == 0) w
-        else width0(div, w + 1)
-      }
-      width0(x, 1)
-    }
+    val width = x.toString(10).size
     def shift_left_10(desired: Int) =
       x * (if (width < desired) BigInt(10).pow(desired - width) else BigInt(1))
   }
