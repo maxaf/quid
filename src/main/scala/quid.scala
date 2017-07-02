@@ -5,7 +5,6 @@ import java.time.{ LocalDateTime, ZoneId }
 import java.time.temporal.ChronoField._
 
 object `package` {
-  val last = new AtomicLong(System.nanoTime)
   val rnd = new scala.util.Random
   val UTC = ZoneId.of("Z")
 
@@ -48,17 +47,15 @@ object `package` {
 
   case class QUID(
       time: Long = now(),
-      nanos: Long = {
-        val nt = System.nanoTime
-        nt - last.getAndSet(nt)
-      },
+      nanos: Long = System.nanoTime,
       random: BigInt = BigInt(128, rnd)
   ) {
     def id = {
       val lhs = BigInt(time).shift_left_10(BigInt.Max_Width_64 * 2) + BigInt(nanos)
       lhs.shift_left_10(BigInt.Max_Width_128 + lhs.width) + random
     }
-    def string = id.toString(Character.MAX_RADIX)
+    def b36 = id.toString(Character.MAX_RADIX)
+    def b62 = B62.encode(id)
   }
 
   def quid(): QUID = QUID()
