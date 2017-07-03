@@ -59,10 +59,16 @@ class QuidSpec extends Specification {
   }
 
   val numericDecode = {
-    QUID.unapply(BigInt("1234121314151617800000000000000000000002000000000000000000000000000000000000003")) must beSome[QUID](===(QUID(time = LocalDateTime.of(1234, 12, 13, 14, 15, 16, 178000000), nanos = 2, random = 3)))
+    QUID.unapply(BigInt("1234121314151617800000000000000000000002000000000000000000000000000000000000003")) must beSome[QUID](===(QUID(time = LocalDateTime.of(1234, 12, 13, 14, 15, 16, 178000000), nanos = 2, random = 3))) and {
+      val id = quid()
+      QUID.unapply(id.id) must_== Some(id)
+    }
   }
 
   val stringDecode = {
-    QUID.unapply("AR0ExszmcTuDU09eMreaNw0cBpebXBCn59BYR2R2QfUh") must beSome[QUID](===(QUID(time = LocalDateTime.of(1234, 12, 13, 14, 15, 16, 178000000), nanos = 2, random = 3)))
+    QUID.unapply("AR0ExszmcTuDU09eMreaNw0cBpebXBCn59BYR2R2QfUh") must beSome[QUID](===(QUID(time = LocalDateTime.of(1234, 12, 13, 14, 15, 16, 178000000), nanos = 2, random = 3))) and {
+      val id = quid()
+      QUID.unapply(id.string) must_== Some(id)
+    }
   }
 }
