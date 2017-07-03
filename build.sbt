@@ -5,9 +5,6 @@ lazy val baseSettings = Seq(
   organization := "com.bumnetworks",
   version := "0.0.1-SNAPSHOT",
   scalaVersion := "2.12.2",
-  initialCommands := """
-    import quid._
-  """,
   scalacOptions ++= Seq(
     "-deprecation",
     "-unchecked",
@@ -35,6 +32,11 @@ lazy val core = project
   .settings(deps)
   .settings(name := "quid", moduleName := "quid")
   .settings(publishSettings)
+  .settings(
+    initialCommands := """
+    import quid._
+    """
+  )
 
 lazy val quid = project
   .aggregate(core)
