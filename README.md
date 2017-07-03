@@ -59,6 +59,8 @@ res3: Option[quid.QUID] = Some(QUID(2017-07-03T04:41:12.212,682808452047743,2985
 * The IDs are time-sortable:
   * Strictly sortable (w/nanosecond precision) within a single JVM.
   * Roughly sortable (w/millisecond precision, modulo clock differences) among many JVMs.
+  * `BigInt` representation is numerically sortable.
+  * `String` representation is a base-62 encoding of the `BigInt`, so it's lexicographically sortable too.
 * Uniqueness is guaranteed by:
   * Slight clock drift between JVMs running on different machines.
   * Individual JVMs (same machine or distributed) will be counting `System.nanoTime` based on different starting values.
