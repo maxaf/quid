@@ -26,7 +26,7 @@ lazy val publishSettings = Seq(
   }
 )
 
-lazy val core = project
+lazy val quid = project
   .in(file("."))
   .settings(baseSettings)
   .settings(deps)
@@ -37,7 +37,3 @@ lazy val core = project
     import quid._
     """
   )
-
-lazy val quid = project
-  .aggregate(core)
-  .settings(baseSettings)
