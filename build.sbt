@@ -5,7 +5,7 @@ enablePlugins(ScalafmtPlugin)
 
 lazy val baseSettings = Seq(
   organization := "com.bumnetworks",
-  version := "0.0.1",
+  version := "0.0.2-SNAPSHOT",
   scalaVersion := "2.12.2",
   crossScalaVersions := Seq(scalaVersion.value, "2.11.8", "2.11.11", "2.10.5"),
   scalacOptions ++= Seq(
