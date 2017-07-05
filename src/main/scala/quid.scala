@@ -2,7 +2,7 @@ package quid
 
 import java.math.BigInteger
 import java.util.concurrent.atomic.AtomicLong
-import java.time.{ LocalDateTime, ZoneId }
+import java.time.{LocalDateTime, ZoneId}
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
@@ -19,7 +19,8 @@ object `package` {
   implicit class BigIntPimp(x: BigInt) {
     val width = x.toString(10).size
     def shift_left_10(desired: Int) =
-      x * (if (width < desired) BigInteger.TEN.pow(desired - width) else BigInt(1))
+      x * (if (width < desired) BigInteger.TEN.pow(desired - width)
+           else BigInt(1))
   }
 
   implicit class BigIntCPimp(bi: BigInt.type) {
@@ -30,13 +31,14 @@ object `package` {
 
   implicit class PimpLocalDateTime(ldt: LocalDateTime) {
     import ChronoField._
-    def encode = (((((ldt.getLong(YEAR_OF_ERA).shift_left_10(6) +
-      ldt.getLong(MONTH_OF_YEAR)).shift_left_10(8) +
-      ldt.getLong(DAY_OF_MONTH)).shift_left_10(10) +
-      ldt.getLong(HOUR_OF_DAY)).shift_left_10(12) +
-      ldt.getLong(MINUTE_OF_HOUR)).shift_left_10(14) +
-      ldt.getLong(SECOND_OF_MINUTE)).shift_left_10(17) +
-      ldt.getLong(MILLI_OF_SECOND)
+    def encode =
+      (((((ldt.getLong(YEAR_OF_ERA).shift_left_10(6) +
+        ldt.getLong(MONTH_OF_YEAR)).shift_left_10(8) +
+        ldt.getLong(DAY_OF_MONTH)).shift_left_10(10) +
+        ldt.getLong(HOUR_OF_DAY)).shift_left_10(12) +
+        ldt.getLong(MINUTE_OF_HOUR)).shift_left_10(14) +
+        ldt.getLong(SECOND_OF_MINUTE)).shift_left_10(17) +
+        ldt.getLong(MILLI_OF_SECOND)
   }
 
   def now() = LocalDateTime.now(UTC)
@@ -47,7 +49,8 @@ object `package` {
       random: BigInt = BigInt(128, rnd)
   ) {
     def id = {
-      val lhs = BigInt(time.encode).shift_left_10(BigInt.Max_Width_64 * 2) + BigInt(nanos)
+      val lhs = BigInt(time.encode)
+        .shift_left_10(BigInt.Max_Width_64 * 2) + BigInt(nanos)
       lhs.shift_left_10(BigInt.Max_Width_128 + lhs.width) + random
     }
     def string = B62.encode(id)
@@ -74,11 +77,12 @@ object `package` {
       val nanos = nanosAndRandom / Ten39
       val random = nanosAndRandom - (nanos * Ten39)
 
-      Some(QUID(
-        time = LocalDateTime.parse(time.toString(10), Time),
-        nanos = nanos.longValue,
-        random = random
-      ))
+      Some(
+        QUID(
+          time = LocalDateTime.parse(time.toString(10), Time),
+          nanos = nanos.longValue,
+          random = random
+        ))
     }
 
     def unapply(s: String): Option[QUID] = unapply(B62.decode(s))

@@ -1,7 +1,8 @@
 package quid
 
 object B62 {
-  private val alphabet = (('0' to '9') ++ ('A' to 'Z') ++ ('a' to 'z')).toVector
+  private val alphabet =
+    (('0' to '9') ++ ('A' to 'Z') ++ ('a' to 'z')).toVector
   private val base = BigInt(alphabet.size)
 
   def decode(s: String): BigInt = {

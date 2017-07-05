@@ -1,6 +1,8 @@
 import java.nio.file._
 import java.nio.file.attribute._
 
+enablePlugins(ScalafmtPlugin)
+
 lazy val baseSettings = Seq(
   organization := "com.bumnetworks",
   version := "0.0.1-SNAPSHOT",
@@ -10,19 +12,24 @@ lazy val baseSettings = Seq(
     "-unchecked",
     "-feature",
     "-language:implicitConversions"
-  )) ++ scalariformSettings
+  ),
+  scalafmtOnCompile in ThisBuild := true,
+  scalafmtTestOnCompile in ThisBuild := true
+)
 
 lazy val deps = Seq(
- libraryDependencies ++= Seq(
-   "org.specs2" %% "specs2-core" % "3.9.1" % "test",
-   "org.specs2" %% "specs2-matcher-extra" % "3.9.1" % "test"))
+  libraryDependencies ++= Seq(
+    "org.specs2" %% "specs2-core" % "3.9.1" % "test",
+    "org.specs2" %% "specs2-matcher-extra" % "3.9.1" % "test"))
 
 lazy val publishSettings = Seq(
   publishTo := {
     val repo = file(".") / ".." / "repo"
-    Some(Resolver.file("repo",
-      if (version.value.trim.endsWith("SNAPSHOT")) repo / "snapshots"
-      else repo / "releases"))
+    Some(
+      Resolver.file("repo",
+                    if (version.value.trim.endsWith("SNAPSHOT"))
+                      repo / "snapshots"
+                    else repo / "releases"))
   }
 )
 
